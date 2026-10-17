@@ -1,0 +1,9 @@
+<Project>
+    <PropertyGroup>
+        <!-- Folder containing the game's Managed DLLs -->
+        <GameManagedPath>C:\Path\To\OxygenNotIncluded\OxygenNotIncluded_Data\Managed</GameManagedPath>
+
+        <!-- Optional: local mod folder to copy build outputs into -->
+        <ModInstallPath>C:\Path\To\mods\local\ForceEruptionInSandboxRevived</ModInstallPath>
+    </PropertyGroup>
+</Project>

@@ -1,0 +1,80 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <Import Project="Local.Build.props" Condition="Exists('Local.Build.props')" />
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+
+        <!-- 3. ランタイムの非互換を防ぐため、アセンブリ参照の検証をスキップさせます -->
+        <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+
+        <!-- C#のバージョンを安定版に指定 -->
+        <LangVersion>10.0</LangVersion>
+
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+
+        <GameManagedPath Condition="'$(GameManagedPath)' == ''">$(ONI_GAME_MANAGED_PATH)</GameManagedPath>
+        <ModInstallPath Condition="'$(ModInstallPath)' == ''">$(ONI_MOD_INSTALL_PATH)</ModInstallPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Reference Include="0Harmony">
+            <HintPath>$(GameManagedPath)\0Harmony.dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp">
+            <HintPath>$(GameManagedPath)\Assembly-CSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp-firstpass">
+            <HintPath>$(GameManagedPath)\Assembly-CSharp-firstpass.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Core">
+            <HintPath>$(GameManagedPath)\System.Core.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine">
+            <HintPath>$(GameManagedPath)\UnityEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>$(GameManagedPath)\UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.TextRenderingModule">
+            <HintPath>$(GameManagedPath)\UnityEngine.TextRenderingModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UI">
+            <HintPath>$(GameManagedPath)\UnityEngine.UI.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <PackageReference Include="PLib" Version="4.25.0">
+            <CopyLocal>true</CopyLocal>
+            <IncludeAssets>all</IncludeAssets>
+            <PrivateAssets>none</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="mod_info.yaml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <!-- ModInstallPath is optional; when set, copy build outputs to the local mod folder. -->
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(ModInstallPath)' != ''">
+        <MakeDir Directories="$(ModInstallPath)"/>
+
+        <!-- 1. 自分のModのDLL（およびデバッグ用の.pdbファイル）だけを狙ってコピー -->
+        <Copy SourceFiles="$(TargetDir)$(TargetName).dll" DestinationFolder="$(ModInstallPath)"/>
+        <Copy SourceFiles="$(TargetDir)$(TargetName).pdb" DestinationFolder="$(ModInstallPath)" Condition="Exists('$(TargetDir)$(TargetName).pdb')"/>
+
+        <!-- 2. 【追加】NuGetから出力フォルダ（TargetDir）に展開された PLib.dll を一本釣りしてコピー -->
+        <Copy SourceFiles="$(TargetDir)PLib.dll" DestinationFolder="$(ModInstallPath)" Condition="Exists('$(TargetDir)PLib.dll')"/>
+
+        <!-- 2. プロジェクト内にある yaml ファイルだけを狙ってコピー -->
+        <Copy SourceFiles="$(ProjectDir)mod_info.yaml" DestinationFolder="$(ModInstallPath)" Condition="Exists('$(ProjectDir)mod_info.yaml')"/>
+
+        <!-- もし今後 mod.yaml など他の設定ファイルが増えた場合もここに追記すればOKです -->
+    </Target>
+</Project>
