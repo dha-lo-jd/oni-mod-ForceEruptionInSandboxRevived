@@ -3,4 +3,4 @@ minimumSupportedBuild: 645000
 version: "1.0.0"
 APIVersion: 2
 title: "Force Eruption in Sandbox Revived"
-description: "Force Eruption in Sandbox Revived"
+description: "Adds a button to force geysers to erupt or go dormant while Sandbox or Debug mode is active."

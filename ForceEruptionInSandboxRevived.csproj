@@ -75,6 +75,7 @@
         <!-- 2. プロジェクト内にある yaml ファイルだけを狙ってコピー -->
         <Copy SourceFiles="$(ProjectDir)mod_info.yaml" DestinationFolder="$(ModInstallPath)" Condition="Exists('$(ProjectDir)mod_info.yaml')"/>
 
-        <!-- もし今後 mod.yaml など他の設定ファイルが増えた場合もここに追記すればOKです -->
+        <MakeDir Directories="$(ModInstallPath)\translations" Condition="Exists('$(ProjectDir)translations\ja.po')" />
+        <Copy SourceFiles="$(ProjectDir)translations\ja.po" DestinationFolder="$(ModInstallPath)\translations" Condition="Exists('$(ProjectDir)translations\ja.po')" />
     </Target>
 </Project>

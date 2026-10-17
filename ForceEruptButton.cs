@@ -1,9 +1,35 @@
 ﻿using System;
 using System.Linq;
 using HarmonyLib;
+using KMod;
+using PeterHan.PLib.Core;
+using PeterHan.PLib.Database;
 using UnityEngine;
+using STRINGS;
 
 namespace ForceEruptionInSandboxRevived;
+
+public sealed class ForceEruptionInSandboxRevivedMod : UserMod2
+{
+    public override void OnLoad(Harmony harmony)
+    {
+        base.OnLoad(harmony);
+        PUtil.InitLibrary();
+        ModUtil.RegisterForTranslation(typeof(STRINGS));
+        new PLocalization().Register();
+    }
+}
+
+public static class STRINGS
+{
+    public static class SIDESCREEN
+    {
+        public static LocString FORCE_DORMANCY = "Force Dormancy";
+        public static LocString FORCE_ERUPTION = "Force Eruption";
+        public static LocString TOOLTIP_DORMANCY = "Advance time to the next dormant state.";
+        public static LocString TOOLTIP_ERUPTION = "Advance time to the next eruption.";
+    }
+}
 
 // 1. 間欠泉・火山が選択された時の詳細パネル（SideScreen）にボタンを追加するパッチ
 [HarmonyPatch(typeof(Geyser), "OnSpawn")]
@@ -137,12 +163,14 @@ public class ForceEruptButton : KMonoBehaviour, ISidescreenButtonControl
     }
 
     // ボタンに表示されるテキスト
-    public string SidescreenButtonText => IsSandbox() ? IsCurrentlyErupting() ? "強制休眠" : "強制噴火" : "";
+    public string SidescreenButtonText => IsSandbox()
+        ? IsCurrentlyErupting() ? STRINGS.SIDESCREEN.FORCE_DORMANCY : STRINGS.SIDESCREEN.FORCE_ERUPTION
+        : "";
 
     // ボタンのツールチップ
     public string SidescreenButtonTooltip => IsCurrentlyErupting()
-        ? "時間を次の休眠まで強制的に進めます"
-        : "時間を次の噴火まで強制的に進めます";
+        ? STRINGS.SIDESCREEN.TOOLTIP_DORMANCY
+        : STRINGS.SIDESCREEN.TOOLTIP_ERUPTION;
 
     // ★最重要：サンドボックスまたはデバッグモードが有効な時だけボタンを表示する
     public void SetButtonTextOverride(ButtonMenuTextOverride textOverride)
