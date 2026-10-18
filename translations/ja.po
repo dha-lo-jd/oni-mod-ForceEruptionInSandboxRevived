@@ -1,0 +1,24 @@
+msgid ""
+msgstr ""
+"Application: Oxygen Not Included"
+"POT Version: 2.0"
+
+#. ForceEruptionInSandboxRevived.STRINGS.SIDESCREEN.FORCE_DORMANCY
+msgctxt "ForceEruptionInSandboxRevived.STRINGS.SIDESCREEN.FORCE_DORMANCY"
+msgid "Force Dormancy"
+msgstr "強制休眠"
+
+#. ForceEruptionInSandboxRevived.STRINGS.SIDESCREEN.FORCE_ERUPTION
+msgctxt "ForceEruptionInSandboxRevived.STRINGS.SIDESCREEN.FORCE_ERUPTION"
+msgid "Force Eruption"
+msgstr "強制噴火"
+
+#. ForceEruptionInSandboxRevived.STRINGS.SIDESCREEN.TOOLTIP_DORMANCY
+msgctxt "ForceEruptionInSandboxRevived.STRINGS.SIDESCREEN.TOOLTIP_DORMANCY"
+msgid "Advance time to the next dormant state."
+msgstr "時間を次の休眠まで強制的に進めます。"
+
+#. ForceEruptionInSandboxRevived.STRINGS.SIDESCREEN.TOOLTIP_ERUPTION
+msgctxt "ForceEruptionInSandboxRevived.STRINGS.SIDESCREEN.TOOLTIP_ERUPTION"
+msgid "Advance time to the next eruption."
+msgstr "時間を次の噴火まで強制的に進めます。"
